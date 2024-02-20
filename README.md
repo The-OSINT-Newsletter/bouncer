@@ -1,4 +1,4 @@
-# Bounce
+# Bouncer
 
 Bouncer is a simple yet powerful bookmarklet that helps you quickly retrieve user IDs from popular social media platforms like Twitter, Facebook, Instagram, and TikTok. Whether you're an OSINT enthusiast, a marketer, or just curious, Bouncer makes it easy to get the information you need with just one click.
 
