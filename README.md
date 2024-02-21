@@ -9,7 +9,44 @@ Bouncer is a simple yet powerful bookmarklet that helps you quickly retrieve use
 3. In the URL field, paste the following code:
 
     ```javascript
-    javascript:(function(){try{var e=window.location.href;if(e.includes("twitter.com")){var t=document.evaluate('//script[@type="application/ld+json"]',document.lastChild,null,XPathResult.ANY_TYPE,null).iterateNext().textContent,n=JSON.parse(t),i=n.author&&n.author.identifier;i?alert("Twitter User ID: "+i):alert("Identifier not found!")}else if(e.includes("facebook.com")){var o=document.documentElement.innerHTML,r=o.match(/"userID":"(\d+)"/);r&&r[1]?alert("Facebook User ID: "+r[1]):alert("User ID not found on this page.")}else if(e.includes("instagram.com")){var a=document.documentElement.innerHTML,r=a.match(/"userID":"(\d+)"/);r&&r[1]?alert("Instagram User ID: "+r[1]):alert("User ID not found on this page.")}else if(e.includes("tiktok.com")){var c=document.documentElement.innerHTML,r=c.match(/"user":{"id":"(\d+)"/);r&&r[1]?alert("TikTok User ID: "+r[1]):alert("User ID not found on this page.")}else alert("This bookmarklet only works on Twitter, Facebook, Instagram, or TikTok.")}catch(e){alert("Error fetching or processing data: "+e.message)}})();
+    javascript:(function(){
+    try {
+        var e = window.location.href;
+        if(e.includes("twitter.com")) {
+            var t = document.evaluate('//script[@type="application/ld+json"]', document.lastChild, null, XPathResult.ANY_TYPE, null).iterateNext().textContent,
+                n = JSON.parse(t),
+                i = n.author && n.author.identifier;
+            i ? alert("Twitter User ID: " + i) : alert("Identifier not found!");
+        } else if(e.includes("facebook.com")) {
+            var o = document.documentElement.innerHTML,
+                r = o.match(/"userID":"(\d+)"/);
+            r && r[1] ? alert("Facebook User ID: " + r[1]) : alert("User ID not found on this page.");
+        } else if(e.includes("instagram.com")) {
+            var a = document.documentElement.innerHTML,
+                r = a.match(/"userID":"(\d+)"/);
+            r && r[1] ? alert("Instagram User ID: " + r[1]) : alert("User ID not found on this page.");
+        } else if(e.includes("tiktok.com")) {
+            var c = document.documentElement.innerHTML,
+                r = c.match(/"user":{"id":"(\d+)"/);
+            r && r[1] ? alert("TikTok User ID: " + r[1]) : alert("User ID not found on this page.");
+        } else if(e.includes("reddit.com/user/")) {
+            var username = e.split("/user/")[1].split("/")[0];
+            var script = document.createElement('script');
+            script.src = 'https://www.reddit.com/user/' + encodeURIComponent(username) + '/about.json?jsonp=displayRedditUserId';
+            document.body.appendChild(script);
+            window.displayRedditUserId = function(response) {
+                if(response && response.data && response.data.id) {
+                    alert("Reddit User ID: " + response.data.id);
+                } else {
+                    alert("User ID not found on this page.");
+                }
+            }
+        } else {
+            alert("This bookmarklet only works on Twitter, Facebook, Instagram, TikTok, or Reddit.");
+        }
+    } catch(e) {
+        alert("Error fetching or processing data: " + e.message);
+    }})();
     ```
 
 4. Save the bookmark.
@@ -26,6 +63,7 @@ Bouncer is a simple yet powerful bookmarklet that helps you quickly retrieve use
 - Facebook
 - Instagram
 - TikTok
+- Reddit
 
 ## Detailed Write Up
 
